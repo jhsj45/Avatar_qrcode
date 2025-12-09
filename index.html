@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>해시태그 복사 페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      margin: 0;
+      background:#000;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      font-family: sans-serif;
+    }
+
+    .poster-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 850px; /* 원하는 최대 크기 */
+    }
+
+    .poster-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+    } 
+
+    /* 이미지 내부 클릭 구역(투명) */
+    .copy-area {
+      position: absolute;
+      left: 10%;
+      transform: translateX(-10%);
+      bottom: 28.8%;  /* 이미지 안에서 "해시태그 복사하기" 버튼의 위치 — 필요하면 조정 가능 */
+      width: 22%;   /* 클릭 영역 너비 */
+      height: 3.2%;   /* 클릭 영역 높이 */
+      cursor: pointer;
+
+      /* 경계확인 
+      background: rgba(255,0,0,0.2);
+      */
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="poster-wrap">
+    <!-- 포스터 이미지 파일명만 바꾸면 됨 -->
+    <img src="avatar_event_poster.jpg" alt="SNS 이벤트 포스터">
+
+    <!-- 포스터 내부 클릭 가능한 영역 (복사 기능) -->
+    <div class="copy-area" id="copyArea"></div>
+  </div>
+
+  <!-- 복사 완료 메시지 -->
+  <div class="toast" id="toast">해시태그가 복사되었습니다!</div>
+
+  <script>
+    const hashtags = "#아바타불과재 #아바타 #불의판도라스퀘어 #12월17일극장대개봉";
+
+    const copyArea = document.getElementById("copyArea");
+    const toast = document.getElementById("toast");
+
+    async function copyTags() {
+      try {
+        await navigator.clipboard.writeText(hashtags);
+        showToast();
+      } catch (err) {
+        console.error(err);
+        alert("복사 오류 발생. 직접 복사해 주세요.");
+      }
+    }
+
+    function showToast() {
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1800);
+    }
+
+    copyArea.addEventListener("click", copyTags);
+  </script>
+</body>
+</html>
